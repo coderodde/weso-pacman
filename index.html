@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PacMan.js!</title>
+        <style type="text/css" media="screen">
+            .hidden {display: none;}
+            .text {color: white; font-family: "Times New Roman";}
+            .smallText {color: white; font-family: "Times New Roman"; font-size: 12px;}
+            .largeText {color: white; font-family: "Times New Roman"; font-size: 24px;}
+            .red {color: red;}
+            .yellow {color: yellow;}
+            #point-counter {margin: 35px;}
+            body {background: black; text-align: center;}
+            canvas {background: black; margin: 0;}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1><span class="red">P</span><span class="yellow">ac</span><span class="red">M</span><span class="yellow">an</span><span class="red">!</span><span class="yellow"> :]</span></h1>
+        </header>
+
+        <div id="welcome" class="text" style="width: 448px; margin-left: auto; margin-right: auto; text-align: justify;">
+            <p>Welcome to play some PacMan! Use the arrow keys or &quot;W, A, S, D&quot; to control your PacMan.</p>
+            <p>
+                <label>Type in your name and press 'Enter': </label>
+                <input type="text" id="namebox" name="Name" />
+            </p>
+        </div>
+
+        <canvas id="pmcanvas" width="448" height="496"></canvas><br />
+
+        <div id="point-counter" class="text"></div>
+
+        <div id="result-view" class="hidden" style="width: 448px; margin-left: auto; margin-right: auto; text-align: center;">
+            <span id="result-msg" class="largeText"></span>
+            <br />
+            <table id="score-table" class="text" style="border: solid 1px white; margin: 0 auto;"></table>
+            <p class="smallText">The score table keeps track of local matches only.</p>
+            <br />
+            <a href="#" onclick="pacman.engine.newGame(pacman.model.username); pacman.engine.hideResultView();">Replay</a>
+            <br />
+            <a href="#" onclick="pacman.engine.hideResultView(); initWelcomeView();">Index page</a>
+
+        </div>
+
+        <script src="pm.js"></script>
+</body></html>

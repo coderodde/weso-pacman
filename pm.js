@@ -389,10 +389,15 @@ pacman.g = (function() {
         var cx = pacman.settings.vpw * pacmanActor.x + pacman.settings.vpw / 2;
         var cy = pacman.settings.vph * pacmanActor.y + pacman.settings.vph / 2;
         var r = 6 * Math.min(pacman.settings.vpw, pacman.settings.vph);
-        var alpha = Math.PI / 5;
+        var i = pacman.model.tickCount % 16;
 
+        if (i >= 8) {
+            i = 15 - i;
+        }
+
+        var alpha = 0.65 * Math.PI * (i / 11);
         c.fillStyle = "yellow";
-
+        
         switch(pacmanActor.dir) {
             case DIR_UP:
                 c.beginPath();
@@ -600,6 +605,7 @@ pacman.model = {
     createNewGame: function() {
         pacman.settings.buildMaze();
         pacman.model.points = 0;
+        pacman.model.tickCount = 0;
         pacman.model.pacman = new pacman.model.Actor(8 * 14,
                                                      8 * 23 + 3,
                                                      DIR_NONE,
@@ -1055,6 +1061,7 @@ pacman.engine = {
                         ghost.dir = DIR_NONE;
                         ghost.vetime = -1;
                         ghost.pdtime = pacman.model.tickCount + 300;
+                        ghost.path = undefined;
                         var bonus = 200 * Math.pow(2, pacman.model.ghostsEaten++);
                         pacman.model.points += bonus;
                         console.log(bonus);
@@ -1236,6 +1243,10 @@ pacman.engine = {
         }
         // END: get out of the ghost pen.
 
+        if (g.vetime === pacman.model.tickCount) {
+            g.path = undefined;
+        }
+
         var pm = pacman.model.pacman;
         var pacmanPos = pm.getTilePosition();
         var ghostPos = g.getTilePosition();
@@ -1252,6 +1263,7 @@ pacman.engine = {
             // reached the pacman.
             return;
         } else if (g.path.length === 0) {
+            console.log("g.path.length == 0");
             // pacman unreachable.
             return;
         }
@@ -1714,6 +1726,11 @@ var KEY_D = 68;
 var KEY_W = 87;
 
 var KEY_SPACE   = 32;
+
+function detachKeyListener() {
+    document.onkeydown = undefined;
+    document.onkeyup = undefined;
+}
 
 function attachKeyListener() {
     document.onkeydown = function(eventInfo) {
